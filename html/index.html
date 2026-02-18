@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Blogg</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>The Glory Of Gamers</h1>
+    </header>
+    <main class="container">
+      <section class="carousel" aria-label="last posts">
+        <div class="carousel__track">
+          <article id="slide-left" class="carousel__card"></article>
+          <article
+            id="slide-center"
+            class="carousel__card carousel__card--active"
+          ></article>
+          <article id="slide-right" class="carousel__card"></article>
+        </div>
+
+        <div class="carousel__pager">
+          <button id="btn-prev" type="button" aria-label="prev">‹</button>
+          <button id="btn-next" type="button" aria-label="next">›</button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./js/index.js"></script>
+  </body>
+</html>
