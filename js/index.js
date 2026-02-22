@@ -10,10 +10,16 @@ function postCardTemplate(post) {
   return `
     <article class="post-card">
       <a class="post-card__link" href="./post/index.html?id=${post.id}">
-        ${hasMedia ? `<img class="post-card__img" src="${post.media.url}" alt="${post.media.alt || post.title}">` : ""}
+        ${
+          hasMedia
+            ? `<img class="post-card__img" src="${post.media.url}" alt="${post.media.alt || post.title}">`
+            : ""
+        }
         <div class="post-card__content">
           <h3 class="post-card__title">${post.title}</h3>
-          <p class="post-card__excerpt">${excerpt}${post.body && post.body.length > 120 ? "..." : ""}</p>
+          <p class="post-card__excerpt">${excerpt}${
+            post.body && post.body.length > 120 ? "..." : ""
+          }</p>
           <span class="post-card__readmore">Les mer →</span>
         </div>
       </a>
@@ -23,12 +29,26 @@ function postCardTemplate(post) {
 
 async function showPosts() {
   try {
+    if (!postsEl) {
+      throw new Error('Fant ikke elementet med id="posts" i HTML.');
+    }
+
     postsEl.innerHTML = `<p class="status">Laster innlegg...</p>`;
-    const posts = await getPosts(profileName);
+
+    // ✅ ENDRET: hent respons, og plukk ut array uansett format
+    const res = await getPosts(profileName);
+    const posts = Array.isArray(res) ? res : (res?.data ?? []);
 
     postsEl.innerHTML = posts.map(postCardTemplate).join("");
+
+    // Valgfritt: hvis API returnerte tomt
+    if (posts.length === 0) {
+      postsEl.innerHTML = `<p class="status">Ingen innlegg å vise.</p>`;
+    }
   } catch (error) {
-    postsEl.innerHTML = `<p class="status status--error">Feil: ${error.message}</p>`;
+    if (postsEl) {
+      postsEl.innerHTML = `<p class="status status--error">Feil: ${error.message}</p>`;
+    }
     console.error(error);
   }
 }
